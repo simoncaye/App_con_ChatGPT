@@ -3,8 +3,6 @@ import pandas as pd
 
 # Configuración inicial
 st.title("Calculadora de PAPA")
-
-# Autor de la app
 st.write("Esta app fue elaborada por “Simón Cardona Yepes.")
 st.markdown("""
 Esta app te permite calcular tu PAPA global y por tipología de asignatura, teniendo en cuenta las calificaciones numéricas y los créditos cursados.
@@ -39,7 +37,7 @@ Por favor, ingresa la información de tus materias vistas:
 - **Nombre de la asignatura**: Nombre descriptivo de la asignatura.
 - **Créditos**: Número de créditos de la asignatura.
 - **Calificación**: Calificación numérica definitiva obtenida (o dejar en blanco si no aplica).
-- **Tipología**: Tipo de asignatura (ej: Obligatoria, Electiva, Nivelatoria).
+- **Tipología**: Tipo de asignatura.
 """)
 
 # Crear tabla de entrada de datos
@@ -51,19 +49,26 @@ with st.form("formulario"):
     asignatura = st.text_input("Nombre de la asignatura:")
     creditos = st.number_input("Créditos:", min_value=1, step=1)
     calificacion = st.number_input("Calificación (deja en blanco si no aplica):", step=0.1, value=0.0)
-    tipologia = st.selectbox("Tipología:", ["Obligatoria", "Electiva", "Nivelatoria"])
+    tipologia = st.selectbox("Tipología:", [
+        "DISCIPLINAR OPTATIVA",
+        "FUND. OBLIGATORIA",
+        "FUND. OPTATIVA",
+        "DISCIPLINAR OBLIGATORIA",
+        "LIBRE ELECCIÓN",
+        "TRABAJO DE GRADO"
+    ])
     submit = st.form_submit_button("Añadir asignatura")
 
     # Añadir datos a la tabla
     if submit:
         if asignatura:
-            nueva_fila = {
+            nueva_fila = pd.DataFrame([{
                 "asignatura": asignatura,
                 "créditos": creditos,
                 "calificación": calificacion if calificacion > 0 else None,
                 "tipología": tipologia,
-            }
-            st.session_state["data"] = st.session_state["data"].append(nueva_fila, ignore_index=True)
+            }])
+            st.session_state["data"] = pd.concat([st.session_state["data"], nueva_fila], ignore_index=True)
             st.success(f"Asignatura '{asignatura}' añadida correctamente.")
         else:
             st.error("Por favor, ingresa un nombre para la asignatura.")
