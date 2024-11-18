@@ -57,8 +57,6 @@ def generar_reporte(periodo):
     reporte["Diferencia"] = reporte["Total_Real"] - reporte["Total_Presupuestado"]
     return reporte
 
-# Título de la aplicación
-st.title("App de Finanzas Personales")
 
 # Sección: Registro de transacciones
 st.header("Registro de Transacciones")
