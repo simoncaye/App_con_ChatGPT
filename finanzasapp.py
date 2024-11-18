@@ -33,6 +33,9 @@ def generar_reporte(periodo):
     if df.empty:
         return "No hay datos disponibles para generar reportes."
     
+    # Convertir la columna 'fecha' al formato datetime
+    df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+    
     # Filtrar datos por periodo
     fecha_actual = dt.date.today()
     if periodo == "Semanal":
@@ -40,8 +43,11 @@ def generar_reporte(periodo):
     elif periodo == "Mensual":
         fecha_inicio = fecha_actual - dt.timedelta(days=30)
 
-    df["fecha"] = pd.to_datetime(df["fecha"])
-    df_periodo = df[df["fecha"] >= fecha_inicio]
+    # Manejar fechas inválidas (NaT)
+    df = df.dropna(subset=["fecha"])
+    
+    # Filtrar por rango de fechas
+    df_periodo = df[df["fecha"] >= pd.Timestamp(fecha_inicio)]
     
     # Calcular diferencias entre presupuestado y real
     reporte = df_periodo.groupby(["categoría", "tipo"]).agg(
