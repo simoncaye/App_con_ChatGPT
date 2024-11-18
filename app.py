@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Título de la app
-st.title("Mi primera app")
+st.title("App de Conversiones")
 
 # Autor de la app
 st.write("Esta app fue elaborada por “Simón Cardona Yepes.")
