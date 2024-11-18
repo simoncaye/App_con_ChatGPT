@@ -1,5 +1,11 @@
 import streamlit as st
 
+# Título de la app
+st.title("Mi primera app")
+
+# Autor de la app
+st.write("Esta app fue elaborada por “Simón Cardona Yepes.")
+
 # Función para conversiones
 def realizar_conversion(categoria, tipo_conversion, valor):
     if categoria == "Temperatura":
